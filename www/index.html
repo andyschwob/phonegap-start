@@ -22,22 +22,424 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        
+        <link rel="stylesheet" type="text/css" href="css/dragdealer.css" />
+        <link rel="stylesheet" type="text/css" href="css/anx.css" />
+
+        <title>Anxiety App</title>
     </head>
     <body>
-        <div class="app">
-            <h1>PhoneGap</h1>
+      <div id="history">
+        <div class="nav-bar">
+          <span class="home">Home</span>
+          <p>Anxiety App</p>
+        </div>
+        <h1>History</h1>
+<!--         <button class="upload">Upload sessions</button> -->
+        <div>
+          <p class="scale">Anxiety Level</p>
+          <ul class="history-list"></ul>
+        </div>
+      </div>
+      <div id="container" data-slide="0">
+        <div class="nav-bar">
+          <span class="home">Home</span>
+          <p>Anxiety App</p>
+        </div>
+        <div class="app" data-num="0">
+          <div class="container center">
+          <p>Do not complete while driving. If you are driving please wait until you are finished driving to complete.</p>
+          </div>
+            <div class="intro-buttons">
+              <button class="continue">Continue</button>              
+            </div>
+        </div>
+        <div class="app" data-num="1">
+          <div class="container intro">
+<!--             <p>It is time to begin the questionnaire.  Click "Add Entry" to begin.</p> -->
+            <p>Click "Add Entry" to begin.</p>
+            <div class="name-saved">
+              <p class="name">ID#: <span></span></p>            
+            </div>
+            <div class="no-name">
+              <p class="name">Enter your ID# below:</p>
+              <input name="name" type="text">
+            </div>
+            <p class="date">Date: <span></span></p> 
+            <div class="error">You must enter your ID#</div>
+
+            <div class="intro-buttons">
+              <button class="continue add-entry">Add Entry</button>              
+            </div>
+          </div>
+        </div>
+
+        <div class="app" data-num="2">
+          <div class="container center">
+            <p>Question 1:</p>
+<!--             <p>In the past 24 hours what was your anxiety level at the most severe moment?</p> -->
+            <p>How anxious are you feeling right now?</p>
+            <div class="slider">
+              <div id="my-slider" class="dragdealer">
+              	<div class="red-bar handle"><span>3</span></div>
+              </div>
+              <div class="slider-description">
+                <p class="desc1">Not at all</p>
+                <p class="desc7">Extremely</p>
+              </div>
+            </div>
+            <div class="intro-buttons full-width">
+              <button class="continue">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="app" data-num="6">
+          <div class="container center">
+            <p>If this is an emergency, please call Crisis Care.</p>            
+            <div class="intro-buttons">
+              <button class="dismiss">Dismiss</button>
+              <a href="tel:5555555555" class="call">Call</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="app" data-num="3">
+          <div class="container center">
+            <p>Question 2:</p>            
+<!--             <p class="changer">Describe what made you feel anxious.</p> -->
+            <p class="changer">Describe what is making you feel anxious.</p>
+
+            <textarea name="q2"></textarea>
+            <div class="error">You must answer the question.</div>
+            <div class="intro-buttons">
+              <button class="back">Back</button>
+              <button class="continue">Next</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="app" data-num="4">
+          <div class="container center">
+            <p>Question 3:</p>            
+<!--             <p class="changer">What thoughts were you having at the time?<span>(thoughts are things we say to ourselves)</span></p> -->
+            <p class="changer">What thoughts are you having?<span>(thoughts are things we say to ourselves)</span></p>
+            <textarea name="q3"></textarea>
+            <div class="error q3">You must answer the question.</div>
+            
+            <p>Question 4:</p>     
+<!--             <p class="changer">What feelings were you having at the time?</p> -->
+            <p class="changer">What feelings are you having?</p>
+
+                <ul class="feelings-list">
+                  <li>
+                    <label>
+                      <input name="feelings1" class="checkbox" type="checkbox">
+                      <span>calm</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="feelings2" class="checkbox" type="checkbox">
+                      <span>relaxed</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="feelings3" class="checkbox" type="checkbox">
+                      <span>worried</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="feelings4" class="checkbox" type="checkbox">
+                      <span>scared</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="feelings5" class="checkbox" type="checkbox">
+                      <span>afraid</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="feelings6" class="checkbox" type="checkbox">
+                      <span>sad</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="feelings7" class="checkbox" type="checkbox">
+                      <span>excited</span>
+                    </label>
+                  </li>	
+                  <li>
+                    <label>
+                      <input name="feelings8" class="checkbox" type="checkbox">
+                      <span>confused</span>
+                    </label>
+                  </li>	
+                  <li>
+                    <label>
+                      <input name="feelings9" class="checkbox" type="checkbox">
+                      <span>angry</span>
+                    </label>
+                  </li>	
+                  <li>
+                    <label>
+                      <input name="feelings10" class="checkbox" type="checkbox">
+                      <span>overwhelmed</span>
+                    </label>
+                  </li>	
+                  <li class="add-feeling">
+                    <label>
+                      <a href="#">or click here to add a feeling</a>
+                      <div class="add">
+                        <textarea name="add-feeling-text"></textarea>
+                        <button class="add-feeling-item">Add To List</button>
+                      </div>                  
+                    </label>
+                  </li>	
+                </ul>
+            <div class="error q4">You must answer the question.</div>
+            
+            <div class="intro-buttons">
+              <button class="back">Back</button>
+              <button class="continue check-feelings">Next</button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="app" data-num="5">
+          <div class="container center">
+             <div class="last-slide"> 
+                <p class="changer">Here are some things you could do:</p>
+                <ul class="ideas-list">
+                  <li>
+                    <h1>Relaxation/Distraction</h1>
+                    <label>
+                      <input name="check1" class="checkbox" type="checkbox">
+                      <span>watch television</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check2" class="checkbox" type="checkbox">
+                      <span>sleep/nap</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check3" class="checkbox" type="checkbox">
+                      <span>listen to music</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check4" class="checkbox" type="checkbox">
+                      <span>meditate/pray</span>
+                    </label>
+                  </li>
+                  <li>
+                    <h1>Thinking Differently</h1>
+                    <label>
+                      <input name="check5" class="checkbox" type="checkbox">
+                      <span>write in journal about your day</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check6" class="checkbox" type="checkbox">
+                      <span>talk to a friend</span>
+                    </label>
+                  </li>
+                  <li>
+                    <h1>Problem Solving</h1>
+                    <label>
+                      <input name="check7" class="checkbox" type="checkbox">
+                      <span>talk to someone that can help (therapist/case worker)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check8" class="checkbox" type="checkbox">
+                      <span>make a plan</span>
+                    </label>
+                  </li>	
+                  <li>
+                    <label>
+                      <input name="check9" class="checkbox" type="checkbox">
+                      <span>create a “to do” list</span>
+                    </label>
+                  </li>	
+                  <li>
+                    <label>
+                      <input name="check10" class="checkbox" type="checkbox">
+                      <span>learn more about the problem</span>
+                    </label>
+                  </li>	
+                  <li class="add-idea">
+                    <label>
+                      <a href="#">or click here to add an idea</a>
+                      <div class="add">
+                        <textarea name="add-text"></textarea>
+                        <button class="add-item">Add To List</button>
+                      </div>                  
+                    </label>
+                  </li>	
+                </ul>
+                <div class="error">You must select at least one option.</div>
+                <div class="intro-buttons original">
+                  <button class="back">Back</button>
+                  <button class="continue check">Next</button>
+                </div>
+             </div>
+             <div class="final-slider">
+                <p>What was your level of anxiety after you tried dealing with it?</p>
+                <div class="slider">
+                  <div id="my-slider2" class="dragdealer">
+                  	<div class="red-bar handle"><span>3</span></div>
+                  </div>
+                 <div class="slider-description">
+                    <p class="desc1">Not at all</p>
+                    <p class="desc7">Extremely</p>
+                  </div>
+                </div>             
+                <div class="intro-buttons next">
+                  <button class="back how-well">Back</button>
+                  <button class="continue how-well">Next</button>
+                </div>
+             </div>
+            <div class="next-time">
+              <p class="">What would you do next time?</p>
+                <ul class="ideas-list">
+                  <li>
+                    <h1>Relaxation/Distraction</h1>
+                    <label>
+                      <input name="check1" class="checkbox" type="checkbox">
+                      <span>watch television</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check2" class="checkbox" type="checkbox">
+                      <span>sleep/nap</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check3" class="checkbox" type="checkbox">
+                      <span>listen to music</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check4" class="checkbox" type="checkbox">
+                      <span>meditate/pray</span>
+                    </label>
+                  </li>
+                  <li>
+                    <h1>Thinking Differently</h1>
+                    <label>
+                      <input name="check5" class="checkbox" type="checkbox">
+                      <span>write in journal about your day</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check6" class="checkbox" type="checkbox">
+                      <span>talk to a friend</span>
+                    </label>
+                  </li>
+                  <li>
+                    <h1>Problem Solving</h1>
+                    <label>
+                      <input name="check7" class="checkbox" type="checkbox">
+                      <span>talk to someone that can help (therapist/case worker)</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input name="check8" class="checkbox" type="checkbox">
+                      <span>make a plan</span>
+                    </label>
+                  </li>	
+                  <li>
+                    <label>
+                      <input name="check9" class="checkbox" type="checkbox">
+                      <span>create a “to do” list</span>
+                    </label>
+                  </li>	
+                  <li>
+                    <label>
+                      <input name="check10" class="checkbox" type="checkbox">
+                      <span>learn more about the problem</span>
+                    </label>
+                  </li>	
+                  <li class="add-idea">
+                    <label>
+                      <a href="#">or click here to add something you did</a>
+                      <div class="add">
+                        <textarea name="add-text"></textarea>
+                        <button class="add-item">Add To List</button>
+                      </div>                  
+                    </label>
+                  </li>	
+                </ul>
+                <div class="error">You must select at least one option.</div>
+                <div class="intro-buttons">
+                  <button class="back">Back</button>
+                  <button class="continue submit-next">Next</button>
+                </div>
+                
+            </div>
+            <div class="final-check">
+              <p>Are you sure you're ready to complete this entry?</p>
+              <div class="intro-buttons">
+                <button class="check-no">No</button>
+                <button class="continue">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="app" data-num="7">
+          <div class="container center">
+            <p>Thank you!</p>            
+            <p>Your entry is complete.</p>
+          </div>
+        </div>
+        
+        <div class="anxiety-history">
+          <p class="or">or</p>
+          <div class="history">
+            <div class="container center">
+              <button class="view">View History</button>
+            </div>
+          </div>
+        
+        </div>
+<!--
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
-        </div>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+-->
+      </div>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/dragdealer.js"></script>
         <script type="text/javascript" src="phonegap.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        
+
         <script type="text/javascript">
+(function(){
+ $(function() {
             app.initialize();
+   });
+})();
         </script>
     </body>
 </html>
