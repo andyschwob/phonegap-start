@@ -15,27 +15,36 @@ $mysql_password = "blues190";
 
   }
 
-$name = $_GET['name'];
-$userid = $_GET['userid'];
+
+$pin = $_GET['id'];
 $sessions = $_GET['sessions'];
 
-if ($_GET['name'] && $_GET['userid'] && $_GET['sessions']) {
+if ($_GET['id'] && $_GET['sessions']) {
   for ($i = 0; $i < count($sessions); ++$i) {
       $session = $sessions[$i];
-/*
-      if (is_array($session["what_feelings"])) {
-        
-      }
-*/
+      $type = $session["type"];
       $anxietyLevel = $session["anxietyLevel"];
-      $feel = $session["feel"];
-      $what_thoughts = $session["what_thoughts"];
+      $anxietyLevelAfter = $session["howWellWork"];
+//      $feel = $session["feel"];
+//      $what_thoughts = $session["what_thoughts"];
       $what_feelings = $session["what_feelings"];
       $things_to_do = $session["things_to_do"];
+      $next_time = $session["next_time"];
       $things = '';
+      $feelings = '';
+      $next = '';
       $timestamp = $session["timestamp"];
       $formatted_date = $session["formatted_date"];
       
+      for ($j = 0; $j < count($what_feelings); ++$j) {
+        if ( ($j+1) < count($what_feelings) ) {
+          $comma = ", ";
+        } else {
+          $comma = "";
+        }
+        $feelings = $feelings . $what_feelings[$j] . $comma;
+      }
+
       for ($j = 0; $j < count($things_to_do); ++$j) {
         if ( ($j+1) < count($things_to_do) ) {
           $comma = ", ";
@@ -44,10 +53,19 @@ if ($_GET['name'] && $_GET['userid'] && $_GET['sessions']) {
         }
         $things = $things . $things_to_do[$j] . $comma;
       }
+
+      for ($j = 0; $j < count($next_time); ++$j) {
+        if ( ($j+1) < count($next_time) ) {
+          $comma = ", ";
+        } else {
+          $comma = "";
+        }
+        $next = $next . $next_time[$j] . $comma;
+      }
       
-      echo $formatted_date . "<br>";
+      echo 'success';
       
-      $runcheck = mysqli_query($con,"INSERT INTO sessions (userid, name, level, feel, what_thoughts, what_feelings, things_to_do, timestamp, formatted_date)  VALUES ('$userid', '$name', '$anxietyLevel', '$feel', '$what_thoughts', '$what_feelings', '$things', '$timestamp', '$formatted_date')");
+      $runcheck = mysqli_query($con,"INSERT INTO sessions (pin, type, level, level_after, what_feelings, things_to_do, next_time, timestamp, formatted_date)  VALUES ('$pin', '$type', '$anxietyLevel', '$anxietyLevelAfter', '$feelings', '$things', '$next', '$timestamp', '$formatted_date')");
 /*
 
       if (mysqli_error($runcheck)) {
@@ -62,7 +80,7 @@ if ($_GET['name'] && $_GET['userid'] && $_GET['sessions']) {
 
   
 } else {
-  echo "no sessions to upload";
+  echo "error";
 }
 /*
 if (mysqli_error($runcheck)) {
