@@ -29,6 +29,7 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
       document.addEventListener('deviceready', this.onDeviceReady, false);
+      document.addEventListener('resume', this.onResume, false);
 
       var $body          = $("body")
         , $window        = $(window)
@@ -667,9 +668,7 @@ var app = {
     onResume: function() {
         alert('resume');
     },
-    onPause: function() {
-      alert('pause');
-    },  
+
     // Update DOM on a Received Event
     receivedEvent: function(id) {
 /*
