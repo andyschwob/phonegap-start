@@ -31,21 +31,85 @@
     <body>
       <div id="history">
         <div class="nav-bar">
-          <span class="home">Home</span>
+          <button class="home">Home</button>
           <p>Anxiety App</p>
+          <button class="upload">Upload</button>
         </div>
-        <h1>History</h1>
-<!--         <button class="upload">Upload sessions</button> -->
-        <div>
-          <p class="scale">Anxiety Level</p>
-          <ul class="history-list"></ul>
+
+        <div class="upload-done">
+          <h1>Upload Complete!</h1>
+            <div class="intro-buttons">
+              <button class="cancel upload-done-btn">Go Back</button>
+            </div>               
         </div>
+        
+        <div class="confirm-upload">
+          <h1>Confirm Upload</h1>
+          <div class="confirm-sessions">There are <b></b> sessions to upload, are you sure?</div>
+            <div class="intro-buttons">
+              <button class="cancel cancel-upload">Cancel</button>
+              <button class="confirm-upload-btn">Yes, Upload</button>              
+            </div>               
+        </div>
+        
+        <div class="admin-pw container">
+          <form class="anx-form">
+            <p class="name">Enter your admin password: <span></span></p>   
+            <input name="password" type="tel">  
+            <div class="error">You must enter a password</div>       
+            <div class="intro-buttons">
+              <a href="#" class="cancel cancel-password">Cancel</a>
+              <button class="enter-password sbmt">Submit</button>              
+            </div>                
+          </form>
+        </div>
+
+        <div class="history-content">
+          <h1>History</h1>
+          <div>
+            <p class="scale">Anxiety Level</p>
+            <ul class="history-list"></ul>
+          </div>
+        </div>
+
+
+
       </div>
-      <div id="container" data-slide="0">
+      <div id="container" data-slide="pin">
         <div class="nav-bar">
-          <span class="home">Home</span>
+          <button class="home">Home</button>
           <p>Anxiety App</p>
         </div>
+        
+        
+        
+        <div class="app" data-num="pin">        
+          <div class="container intro">
+          <form class="anx-form">
+            <div class="pin-set">
+              <p class="name">Please enter your PIN #: <span></span></p>   
+              <input name="mypin" type="tel">  
+              <div class="error">You must enter a PIN #</div>       
+              <div class="intro-buttons">
+                <button class="enter-pin sbmt">Submit</button>              
+              </div>                
+            </div>
+          </form>
+          <form class="anx-form">
+            <div class="pin-not-set">
+              <p class="name">You must first set a PIN #:</p>
+              <input name="mypin" type="tel">
+              <div class="error">You must enter your PIN #</div>
+              <div class="intro-buttons">
+                <button class="set-pin1 sbmt">Submit</button>              
+              </div>              
+            </div>
+          </form>            
+          </div>          
+        </div>
+        
+        
+        
         <div class="app" data-num="0">
           <div class="container center">
           <p>Do not complete while driving. If you are driving please wait until you are finished driving to complete.</p>
@@ -54,25 +118,32 @@
               <button class="continue">Continue</button>              
             </div>
         </div>
+        
+        
+        
         <div class="app" data-num="1">
           <div class="container intro">
-<!--             <p>It is time to begin the questionnaire.  Click "Add Entry" to begin.</p> -->
-            <p>Click "Add Entry" to begin.</p>
-            <div class="name-saved">
-              <p class="name">ID#: <span></span></p>            
-            </div>
-            <div class="no-name">
-              <p class="name">Enter your ID# below:</p>
-              <input name="name" type="text">
-            </div>
-            <p class="date">Date: <span></span></p> 
-            <div class="error">You must enter your ID#</div>
+            <p class="date"><span></span></p> 
 
             <div class="intro-buttons">
-              <button class="continue add-entry">Add Entry</button>              
+              <button class="continue daily add-entry">Daily Entry (After 8pm)</button>              
+            </div>
+            <div class="intro-buttons">
+              <button class="continue add-entry">Free Entry</button>              
+            </div>
+
+            <div class="anxiety-history">
+              <p class="or">or</p>
+              <div class="history">
+                <div class="container center">
+                  <button class="view">View History</button>
+                </div>
+              </div>        
             </div>
           </div>
         </div>
+        
+        
 
         <div class="app" data-num="2">
           <div class="container center">
@@ -271,7 +342,7 @@
                   <li>
                     <label>
                       <input name="check9" class="checkbox" type="checkbox">
-                      <span>create a “to do” list</span>
+                      <span>create a 'to do' list</span>
                     </label>
                   </li>	
                   <li>
@@ -369,7 +440,7 @@
                   <li>
                     <label>
                       <input name="check9" class="checkbox" type="checkbox">
-                      <span>create a “to do” list</span>
+                      <span>create a 'to do' list</span>
                     </label>
                   </li>	
                   <li>
@@ -390,7 +461,7 @@
                 </ul>
                 <div class="error">You must select at least one option.</div>
                 <div class="intro-buttons">
-                  <button class="back">Back</button>
+                  <button class="back next-time-btn">Back</button>
                   <button class="continue submit-next">Next</button>
                 </div>
                 
@@ -411,16 +482,7 @@
             <p>Your entry is complete.</p>
           </div>
         </div>
-        
-        <div class="anxiety-history">
-          <p class="or">or</p>
-          <div class="history">
-            <div class="container center">
-              <button class="view">View History</button>
-            </div>
-          </div>
-        
-        </div>
+      
 <!--
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>

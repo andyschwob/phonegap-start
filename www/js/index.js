@@ -43,13 +43,17 @@ var app = {
         }   
 
        Date.prototype.yyyymmdd = function() {
-         var yyyy = this.getFullYear().toString().replace('2014','14').replace('2015','15');
+         var yyyy = this.getFullYear().toString().replace('2014','14').replace('2015','15').replace('2016','16');
          var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
          var dd  = this.getDate().toString();
          var min = ('0' + this.getMinutes()).slice(-2).toString();
          console.log(min)
          var hr = this.getHours().toString();
-         return (mm[1]?mm:mm[0]) + '-' + (dd[1]?dd:dd[0]) + '-' + yyyy + ' ' + hr + ':' + min; // padding
+         console.log(hr);
+         var hour = parseInt(hr,10);
+         var ampm = hour < 12 ? 'AM' : 'PM';
+         hr = hour < 12 ? hour : hour - 12;
+         return (mm[1]?mm:mm[0]) + '/' + (dd[1]?dd:dd[0]) + '/' + yyyy + ' ' + hr + ':' + min + ' ' + ampm;
         };
 
         function makeid() {
@@ -64,13 +68,13 @@ var app = {
 
         
         function initApp() {
-          console.log('initapp')
-          if (anxietyApp.idnumber) {
-            $('.name-saved').show().find('span').text(anxietyApp.idnumber);   
-            $('.no-name').hide();         
+          if (anxietyApp.id) {
+            $('.pin-set').show(); 
+            $('.pin-not-set').hide();         
           }
           else {
-            $('.no-name').show();
+            $('.pin-set').hide();
+            $('.pin-not-set').show();
           }
           if (anxietyApp.sessions && anxietyApp.sessions.length) {
             $('.anxiety-history').show();
@@ -88,7 +92,6 @@ var app = {
             var anxiety = 
               {
                 id: '',
-                idnumber: '',
                 sessions: [],
                 tempSession: {},
                 thingsToDo: []
@@ -145,6 +148,7 @@ var app = {
           $('.history-list').empty();
           $('#history').hide();
           $('#my-slider').html('<div class="red-bar handle"><span>3</span></div>');
+          $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
           $container.show().attr('data-slide','1');
           initApp();
         });
@@ -169,46 +173,124 @@ var app = {
            $('.error').hide();
         });
         
+        $('#history').on('click', '.cancel', function(e) {
+           e.preventDefault();
+           console.log('cancel');
+           var self = $(this);
+           $('.admin-pw, .confirm-upload').hide();
+           $('.history-content, .nav-bar .upload').show();
+           
+           $('.admin-pw input').val('');
+        });
+                
+        $('#history').on('click', '.upload-done-btn', function(e) {
+           e.preventDefault();
+           var self = $(this);
+           $('.admin-pw, .confirm-upload, .upload-done').hide();
+           $('.history-content, .nav-bar .upload').show();
+           
+           $('.admin-pw input').val('');
+        });
+
+        $(document).on('click', '.enter-password', function(e) {
+          e.preventDefault();
+          var self = $(this);
+          var adminPW = '3095';
+          var form = self.closest('.anx-form');
+          var pw = form.find('input').val();
+          form.find('.error').hide();
+
+          if (!pw) {
+            form.find('.error').html('You must enter your password').show();
+            return false;
+          }
+          
+          if (pw != adminPW) {
+            form.find('.error').html('Your password is incorrect').show();
+            return false;            
+          }
+          
+          try {
+             var data = JSON.parse(localStorage.anxiety);
+             var falseCount = 0;
+             for (var i in data.sessions) {
+               if (data.sessions[i].uploaded == false) {
+                 falseCount++;
+               }
+             }                  
+          } catch(e) { var data = {}; }  
+          
+          var confirmTxt = '';
+          if (falseCount > 1) {
+            confirmTxt = "There are <b>" + falseCount + "</b> sessions to upload, are you sure?";
+            $('.confirm-upload-btn').show();
+            $('.cancel-upload').html('Cancel'); 
+          } else if (falseCount == 1) {
+            confirmTxt = "There is <b>" + falseCount + "</b> session to upload, are you sure?";
+            $('.confirm-upload-btn').show();
+            $('.cancel-upload').html('Cancel');
+          } else {
+            confirmTxt = "There are currently no sessions to upload";
+            $('.confirm-upload-btn').hide();
+            $('.cancel-upload').html('Go Back');
+          }
+          $('.confirm-sessions').html(confirmTxt);          
+          $('.admin-pw').hide();
+          $('.confirm-upload').show();
+
+          $('html, body').animate({	scrollTop: 0 }, 400);   
+        });
         
-        $(document).on('click', 'button.upload', function(e) {           
+        $(document).on('click', '.confirm-upload-btn', function(e) {  
+          e.preventDefault();
            try {
              var data = JSON.parse(localStorage.anxiety);
              var sendData = $.extend(true, {}, data);
              var newSessions = [];
-             console.log(sendData)
 
              for (var i in sendData.sessions) {
                if (sendData.sessions[i].uploaded == false) {
+                 delete sendData.sessions[i].feel;
+                 delete sendData.sessions[i].what_thoughts;
                  newSessions.push(sendData.sessions[i]);
                }
              }
-             sendData.sessions = newSessions;
-             console.log(sendData)
+             sendData.sessions = newSessions;           
              
-             
-           } catch(e) { var data = {}; }
-           
-           
-           console.log(data)
+           } catch(e) { var data = {}; }                      
+
            $.ajax({
              url: 'http://anxietyapp.comuv.com/submit.php',
              type: 'GET',
              data: sendData
-           }).done(function() {
-             console.log('success');
-                                        
-              for (var i in data.sessions) {
-                data.sessions[i].uploaded = true;
-              }
-              anxietyApp = data;
-
-              localStorage.anxiety = JSON.stringify(data);
-
-           }).fail(function() {
-           console.log('fail')
+           }).done(function(response) {
+             console.log(response);
+             if (response === 'error') {
+                // show error   
+                console.log('error');                
+             } else {
+               console.log('success');
+                for (var i in data.sessions) {
+                  data.sessions[i].uploaded = true;
+                }
+                anxietyApp = data;  
+                localStorage.anxiety = JSON.stringify(data);  
+                $('.confirm-upload').hide();     
+                $('.upload-done').show();    
+             }                            
            });
         });
+        $(document).on('submit', '.anx-form', function(e) {
+          e.preventDefault();
+          console.log('23423432343234234243');
+          $(this).find('.sbmt').click();
+        });
 
+        $(document).on('click', 'button.upload', function(e) {  
+           e.preventDefault();
+           $('.history-content, .confirm-upload, .nav-bar .upload').hide();
+           $('.admin-pw').show();
+        });
 
         $(document).on('click', '.dismiss', function(e) {
            $container.attr('data-slide',3);
@@ -217,12 +299,12 @@ var app = {
         $(document).on('click', '.back', function(e) {
           if ($(this).hasClass('how-well')) {
              $('.app[data-num="5"]').find('.last-slide').show(); 
-             $('.app[data-num="5"]').find('.final-slider').removeClass('show');
+               $('.app[data-num="5"]').find('.final-slider').removeClass('show');
              $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
-          } else if ($(this).hasClass('next-time')) {
-             $('.app[data-num="5"]').find('.last-slide').show(); 
+          } else if ($(this).hasClass('next-time-btn')) {
+             $('.app[data-num="5"]').find('.final-slider').addClass('show'); 
              $('.app[data-num="5"]').find('.next-time').hide();
-             $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
+           //  $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
           } else {
              var currentSlide = parseInt($(this).closest('.app').attr('data-num'),10)
                , prevSlide    = currentSlide - 1;   
@@ -232,7 +314,7 @@ var app = {
 
         $(document).on('click', '.check-no', function(e) {
              $('.app[data-num="5"]').find('.last-slide').show(); 
-             $('.app[data-num="5"]').find('.final-check').hide();
+             $('.app[data-num="5"]').removeClass('final-slide').find('.final-check').hide();
              $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
         });
 
@@ -264,15 +346,26 @@ var app = {
 
              $.each(anxietyApp.sessions, function() {
                var lvl = parseInt(this.anxietyLevel,10);
+               var lvlafter = parseInt(this.howWellWork,10);
                var perc = Math.round((lvl / 7)*100);
                var date = this.formatted_date;
+               var typeClass = this.type;
                var things = '';
                $.each(this.things_to_do, function() {
                  things += '<li>- '+this+'</li>';
                });
                var anxTxt = (lvl <= 1) ? 'good' : 'anxious';
-               var historyItem = $('<li class="level"><span>'+date+'</span><div><div data-time="'+this.timestamp+'" class="color-bar" style="width:'+perc+'%;">'+this.anxietyLevel+'</div></div></li>');             
-               var historyDetail = $('<li class="detail" data-time="'+this.timestamp+'"><div><b>Date:</b> '+this.formatted_date+'</div><div><b>My anxiety level:</b> '+this.anxietyLevel+'</div><div><b>Why I was feeling '+anxTxt+':</b> '+this.feel+'</div><div><b>Thoughts I was having:</b> '+this.what_thoughts+'</div><div><b>Feelings I was having:</b> '+this.what_feelings+'</div><div><b>Things I did:</b> <ul class="things">'+things+'</ul></div></li>'); 
+               var next_time = '';
+               var next_time_list = '';
+               if (this.next_time) {
+                 $.each(this.next_time, function() {
+                   next_time += '<li>- '+this+'</li>';
+                 });                 
+                 var next_time_list = '<div><b>To do next time:</b> <ul class="things">'+next_time+'</ul></div>';
+               }
+               
+               var historyItem = $('<li class="level"><span>'+date+'</span><div><div data-time="'+this.timestamp+'" class="color-bar ' + typeClass + '" style="width:'+perc+'%;">'+this.anxietyLevel+'</div></div></li>');             
+               var historyDetail = $('<li class="detail" data-time="'+this.timestamp+'"><div><b>Date:</b> '+this.formatted_date+'</div><div><b>My anxiety level:</b> '+this.anxietyLevel+'</div><div><b>Why I was feeling '+anxTxt+':</b> '+this.feel+'</div><div><b>Thoughts I was having:</b> '+this.what_thoughts+'</div><div><b>Feelings I was having:</b> '+this.what_feelings+'</div><div><b>Things I did:</b> <ul class="things">'+things+'</ul></div><div><b>My anxiety level afterwards:</b> '+lvlafter+'</div>' + next_time_list + '</li>'); 
                $('#history').find('.history-list').append(historyItem,historyDetail);               
              });
           }
@@ -280,15 +373,90 @@ var app = {
         });
 
 
+        $(document).on('click', '.set-pin1', function(e) {
+          e.preventDefault();
+          var self = $(this);
+          var form = self.closest('.anx-form');
+          var obj = JSON.parse(localStorage.anxiety);
+          var pin = form.find('input').val();
+          var savedPin = obj.id;
+          form.find('.error').hide();
+
+          if (!pin) {
+            form.find('.error').html('You must enter a PIN #').show();
+            return false;
+          }
+          
+          obj.id = pin;               
+          localStorage.anxiety = JSON.stringify(obj);         
+  
+          $container.attr('data-slide','0');
+          $('html, body').animate({	scrollTop: 0 }, 400); 
+        });
+
+        $(document).on('click', '.enter-pin', function(e) {
+          e.preventDefault();
+          var self = $(this);
+          var form = self.closest('.anx-form');
+          var obj = JSON.parse(localStorage.anxiety);
+          var pin = form.find('input').val();
+          var savedPin = obj.id;
+          form.find('.error').hide();
+
+          if (!pin) {
+            form.find('.error').html('You must enter your PIN #').show();
+            return false;
+          }
+          
+          if (pin != savedPin) {
+            form.find('.error').html('Your PIN # is incorrect').show();
+            return false;            
+          }
+
+          $container.attr('data-slide','0');
+          $('html, body').animate({	scrollTop: 0 }, 400); 
+        });
+
+        $(document).on('click', '.enter-pin1', function(e) {
+          var obj = JSON.parse(localStorage.anxiety);
+          var pin = $('input[name="setpin"]').val();
+          console.log(pin);
+/*
+          var idnumber = obj.idnumber;
+          var id = obj.id;
+          
+          if (!idnumber) {
+            idnumber = $('input[name="name"]').val();
+          }
+          if (!id) {
+            id = makeid();
+          }
+*/
+          if (!pin) {
+            $('.app[data-num="pin"] .pin-not-set').find('.error').show();
+            return false;
+          }
+          // save name
+//          obj.idnumber = idnumber; 
+          obj.id = pin;               
+          localStorage.anxiety = JSON.stringify(obj);         
+  
+          $container.attr('data-slide','0');
+          $('html, body').animate({	scrollTop: 0 }, 400); 
+        });
+        
+
         $(document).on('click', '.continue', function(e) {
-           var currentSlide = parseInt($(this).closest('.app').attr('data-num'),10)
-             , nextSlide    = currentSlide + 1;   
+           var self = $(this);
+           var currentSlide = parseInt(self.closest('.app').attr('data-num'),10);
+           var nextSlide    = currentSlide + 1;   
              
            $('.error').hide();
            
            // SESSION SUBMIT
            if ($(this).closest('.final-check').length) {
              var d = new Date();             
+             var type = $container.attr('data-type');
              setLocalStorageValue('timestamp',new Date().getTime());
              console.log(d.yyyymmdd())
              setLocalStorageValue('formatted_date',d.yyyymmdd());
@@ -296,10 +464,14 @@ var app = {
              var obj = JSON.parse(localStorage.anxiety);
              var tempObj = obj.tempSession;
              tempObj.uploaded = false;
+             tempObj.type = type;
              
              $('textarea').each(function() {
                $(this).val('');
              });
+             $('input[type="checkbox"]').prop('checked', false);
+             $('.final-check').hide();
+             $('.last-slide').show();
              
              obj.sessions.push(tempObj);
              obj.tempSession = {};
@@ -328,22 +500,21 @@ var app = {
              setLocalStorageValue('things_to_do',thingsToDo);
              if (anxiety <= 1) {
                $('.app[data-num="5"]').find('.last-slide').hide(); 
-               $('.app[data-num="5"]').find('.final-check').show(); 
+               $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show(); 
              } else {    
               $('.app[data-num="5"]').find('.last-slide').hide();           
                 
                $('.app[data-num="5"]').find('.final-slider').addClass('show');
                initDragdealer2(); 
                
-        //       $('.app[data-num="5"]').find('.final-check').show(); 
              }             
             
            } else if ($(this).hasClass('how-well')) {
             console.log('how well: ' + howWellWork)
               if (howWellWork <= 2) {
                 $('.app[data-num="5"]').find('.final-slider').removeClass('show');
-                $('.app[data-num="5"]').find('.final-check').show(); 
-              } else {
+                $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show(); 
+              } else {  
                 $('.app[data-num="5"]').find('.final-slider').removeClass('show');
                 $('.app[data-num="5"]').find('.next-time').show(); 
               }
@@ -367,7 +538,7 @@ var app = {
 
 
               $('.app[data-num="5"]').find('.next-time').hide();
-              $('.app[data-num="5"]').find('.final-check').show(); 
+              $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show(); 
 
            } else {            
               if (currentSlide == 1) {
@@ -375,28 +546,23 @@ var app = {
                 var idnumber = obj.idnumber;
                 var id = obj.id;
                 
-                if (!idnumber) {
-                  idnumber = $('input[name="name"]').val();
+                if (self.hasClass('daily')) {
+                  $container.attr('data-type','daily');
+                } else {
+                  $container.attr('data-type','free');
                 }
-                if (!id) {
-                  id = makeid();
-                }
-                if (!idnumber) {
-                  $('.app[data-num="1"]').find('.error').show();
-                  return false;
-                }
-                // save name
-                obj.idnumber = idnumber; 
-                obj.id = id;               
-                localStorage.anxiety = JSON.stringify(obj);
+                
               } 
                if(nextSlide == 3) {
                    if(anxiety >= 6) {
                      $container.attr('data-slide',6);
                      return false;
                    }
-/*                  var text = anxiety <= 1 ? 'Describe what kept your anxiety low.' : 'Describe what made you feel anxious.'; */
-                 var text = anxiety <= 1 ? 'Describe what is keeping your anxiety low.' : 'Describe what is making you feel anxious.';
+                 if ($container.attr('data-type') === 'daily') {
+                   var text = anxiety <= 1 ? 'Describe what kept your anxiety low.' : 'Describe what made you feel anxious.'; 
+                 } else {
+                   var text = anxiety <= 1 ? 'Describe what is keeping your anxiety low.' : 'Describe what is making you feel anxious.';   
+                 }   
 
                  $('.app[data-num="3"]').find('.changer').text(text);
                }
@@ -436,8 +602,12 @@ var app = {
                  setLocalStorageValue('what_thoughts',q3);
                  setLocalStorageValue('what_feelings',feelings);
 
-/*                   var text = anxiety <= 1 ? 'What did you do to keep your anxiety low?' : 'What did you try to do to reduce your anxiety:'; */
-                 var text = anxiety <= 1 ? 'What are some things you have done?' : 'Here are some things you can do:';
+                 if ($container.attr('data-type') === 'daily') {
+                   var text = anxiety <= 1 ? 'What did you do to keep your anxiety low?' : 'What did you try to do to reduce your anxiety:';
+                 } else {
+                   var text = anxiety <= 1 ? 'What are some things you have done?' : 'Here are some things you can do:';
+                 }   
+                 
                  $('.app[data-num="5"]').find('.changer').text(text);
                }
                
@@ -445,8 +615,7 @@ var app = {
                $('html, body').animate({	scrollTop: 0 }, 400); 
                
                if(nextSlide == 2) initDragdealer();
-           }
-          
+           }       
            
         });
 
@@ -493,7 +662,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-      console.log('ready')
+      alert('ready');
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event
