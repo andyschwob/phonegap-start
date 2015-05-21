@@ -512,7 +512,7 @@ var app = {
              }             
             
            } else if ($(this).hasClass('how-well')) {
-            console.log('how well: ' + howWellWork)
+
               if (howWellWork <= 2) {
                 $('.app[data-num="5"]').find('.final-slider').removeClass('show');
                 $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show(); 
@@ -671,13 +671,16 @@ var app = {
       var timePaused = obj.timePaused;
       var now = new Date().getTime();
       var secondsBetween = Math.round((now - timePaused)/1000);
-        alert(secondsBetween + ' sec since your last visit');
-        /*
-  var obj = JSON.parse(localStorage.anxiety);
-          obj.id = pin;               
-          localStorage.anxiety = JSON.stringify(obj);    
-*/
-        
+      if (secondsBetween > 30) {
+        // restart app here
+         $('#container').attr('data-num','pin');
+         $('textarea').each(function() {
+           $(this).val('');
+         });
+         $('input[type="checkbox"]').prop('checked', false);
+         $('.last-slide').show();
+         $('.final-slider, .next-time, .final-check').hide();
+      }        
     },
     onPause: function() {
         var obj = JSON.parse(localStorage.anxiety);
