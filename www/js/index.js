@@ -301,10 +301,10 @@ var app = {
         $(document).on('click', '.back', function(e) {
           if ($(this).hasClass('how-well')) {
              $('.app[data-num="5"]').find('.last-slide').show(); 
-               $('.app[data-num="5"]').find('.final-slider').removeClass('show');
+               $('.app[data-num="5"]').find('.final-slider').hide();
              $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
           } else if ($(this).hasClass('next-time-btn')) {
-             $('.app[data-num="5"]').find('.final-slider').addClass('show'); 
+             $('.app[data-num="5"]').find('.final-slider').show(); 
              $('.app[data-num="5"]').find('.next-time').hide();
            //  $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
           } else {
@@ -506,7 +506,7 @@ var app = {
              } else {    
               $('.app[data-num="5"]').find('.last-slide').hide();           
                 
-               $('.app[data-num="5"]').find('.final-slider').addClass('show');
+               $('.app[data-num="5"]').find('.final-slider').show();
                initDragdealer2(); 
                
              }             
@@ -514,10 +514,10 @@ var app = {
            } else if ($(this).hasClass('how-well')) {
 
               if (howWellWork <= 2) {
-                $('.app[data-num="5"]').find('.final-slider').removeClass('show');
+                $('.app[data-num="5"]').find('.final-slider').hide();
                 $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show(); 
               } else {  
-                $('.app[data-num="5"]').find('.final-slider').removeClass('show');
+                $('.app[data-num="5"]').find('.final-slider').hide();
                 $('.app[data-num="5"]').find('.next-time').show(); 
               }
            } else if ($(this).hasClass('submit-next')) {
