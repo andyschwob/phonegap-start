@@ -686,6 +686,7 @@ var app = {
          $('.final-slider, .next-time, .final-check').hide();
          $('.pin-not-set').hide();
          $('.pin-set').show();
+         $('.history-list').empty();
           $('#history').hide();
           $('#my-slider').html('<div class="red-bar handle"><span>3</span></div>');
           $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
