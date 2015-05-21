@@ -671,7 +671,7 @@ var app = {
       var timePaused = obj.timePaused;
       var now = new Date().getTime();
       var secondsBetween = Math.round((now - timePaused)/1000);
-      if (secondsBetween > 30) {
+      if (secondsBetween > 600) {
 
         // restart app here
          $('#container').show().attr('data-slide','pin');
