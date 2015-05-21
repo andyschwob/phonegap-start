@@ -667,7 +667,11 @@ var app = {
         app.receivedEvent('deviceready');
     },
     onResume: function() {
-        alert('resume');
+      var obj = JSON.parse(localStorage.anxiety);
+      var timePaused = obj.timePaused;
+      var now = new Date().getTime();
+      var secondsBetween = Math.round((now - timePaused)/1000);
+        alert(secondsBetween + ' sec since your last visit');
         /*
   var obj = JSON.parse(localStorage.anxiety);
           obj.id = pin;               
@@ -676,7 +680,9 @@ var app = {
         
     },
     onPause: function() {
-        alert('pause');
+        var obj = JSON.parse(localStorage.anxiety);
+        obj.timePaused = new Date().getTime();               
+        localStorage.anxiety = JSON.stringify(obj); 
     },
 
     // Update DOM on a Received Event
