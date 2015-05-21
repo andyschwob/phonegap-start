@@ -477,6 +477,7 @@ body {
   -moz-transition: left 0.1s;
   -ms-transition: left 0.1s;
   transition: left 0.1s;
+  padding: 20px;
 }
 .dragdealer .red-bar span {
   display: block;
