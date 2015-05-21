@@ -674,7 +674,7 @@ var app = {
       if (secondsBetween > 30) {
 
         // restart app here
-         $('#container').attr('data-slide','pin');
+         $('#container').show().attr('data-slide','pin');
          $('textarea').each(function() {
            $(this).val('');
          });

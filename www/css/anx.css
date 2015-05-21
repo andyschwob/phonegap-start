@@ -57,6 +57,10 @@ body .download-app {
 #history {
   display: none;
   margin-top: 60px;
+  -webkit-tap-highlight-color: transparent;
+}
+#history .history-content {
+  -webkit-tap-highlight-color: transparent;
 }
 #history h1 {
   font-size: 18px;
@@ -242,9 +246,6 @@ body .download-app {
   } 
 */
 /* Portrait layout (default) */
-}
-#container .history-content {
-  -webkit-tap-highlight-color: transparent;
 }
 #container .slider-description {
   margin-bottom: 10px;
