@@ -30,6 +30,7 @@ var app = {
     bindEvents: function() {
       document.addEventListener('deviceready', this.onDeviceReady, false);
       document.addEventListener('resume', this.onResume, false);
+      document.addEventListener('pause', this.onPause, false);
 
       var $body          = $("body")
         , $window        = $(window)
@@ -667,6 +668,15 @@ var app = {
     },
     onResume: function() {
         alert('resume');
+        /*
+  var obj = JSON.parse(localStorage.anxiety);
+          obj.id = pin;               
+          localStorage.anxiety = JSON.stringify(obj);    
+*/
+        
+    },
+    onPause: function() {
+        alert('pause');
     },
 
     // Update DOM on a Received Event
