@@ -672,14 +672,19 @@ var app = {
       var now = new Date().getTime();
       var secondsBetween = Math.round((now - timePaused)/1000);
       if (secondsBetween > 30) {
+      alert('greater than 30');
         // restart app here
-         $('#container').attr('data-num','pin');
+         $('#container').attr('data-slide','pin');
          $('textarea').each(function() {
+           $(this).val('');
+         });
+         $('input[type="tel"],input[type="text"]').each(function() {
            $(this).val('');
          });
          $('input[type="checkbox"]').prop('checked', false);
          $('.last-slide').show();
          $('.final-slider, .next-time, .final-check').hide();
+
       }        
     },
     onPause: function() {
