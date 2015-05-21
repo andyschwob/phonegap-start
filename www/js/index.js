@@ -672,7 +672,7 @@ var app = {
       var now = new Date().getTime();
       var secondsBetween = Math.round((now - timePaused)/1000);
       if (secondsBetween > 30) {
-      alert('greater than 30');
+
         // restart app here
          $('#container').attr('data-slide','pin');
          $('textarea').each(function() {
@@ -684,7 +684,11 @@ var app = {
          $('input[type="checkbox"]').prop('checked', false);
          $('.last-slide').show();
          $('.final-slider, .next-time, .final-check').hide();
-
+         $('.pin-not-set').hide();
+         $('.pin-set').show();
+          $('#history').hide();
+          $('#my-slider').html('<div class="red-bar handle"><span>3</span></div>');
+          $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
       }        
     },
     onPause: function() {
