@@ -43,6 +43,17 @@ body {
   overflow-x: hidden !important;
   background: #bfcadf;
 }
+body .download-app {
+  width: 200px;
+  line-height: 1.2;
+  color: #000;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: underline;
+  margin: 100px auto 0;
+  display: block;
+  text-align: center;
+}
 #history {
   display: none;
   margin-top: 60px;
@@ -231,6 +242,9 @@ body {
   } 
 */
 /* Portrait layout (default) */
+}
+#container .history-content {
+  -webkit-tap-highlight-color: transparent;
 }
 #container .slider-description {
   margin-bottom: 10px;
