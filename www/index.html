@@ -35,7 +35,7 @@
           <p>Anxiety App</p>
           <button class="upload">Upload</button>
         </div>
-
+        
         <div class="upload-done">
           <h1>Upload Complete!</h1>
             <div class="intro-buttons">
@@ -126,7 +126,7 @@
             <p class="date"><span></span></p> 
 
             <div class="intro-buttons">
-              <button class="continue daily add-entry">Daily Entry (After 8pm)</button>              
+              <button class="continue daily add-entry">Daily Report (After 8pm)</button>              
             </div>
             <div class="intro-buttons">
               <button class="continue add-entry">Free Entry</button>              
@@ -268,6 +268,7 @@
                       <a href="#">or click here to add a feeling</a>
                       <div class="add">
                         <textarea name="add-feeling-text"></textarea>
+                        <button class="cancel-add-feeling">Cancel</button>
                         <button class="add-feeling-item">Add To List</button>
                       </div>                  
                     </label>
@@ -356,6 +357,7 @@
                       <a href="#">or click here to add an idea</a>
                       <div class="add">
                         <textarea name="add-text"></textarea>
+                        <button class="cancel-add-item">Cancel</button>
                         <button class="add-item">Add To List</button>
                       </div>                  
                     </label>
@@ -385,67 +387,67 @@
              </div>
             <div class="next-time">
               <p class="">What would you do next time?</p>
-                <ul class="ideas-list">
+                <ul class="next-ideas-list">
                   <li>
                     <h1>Relaxation/Distraction</h1>
                     <label>
-                      <input name="check1" class="checkbox" type="checkbox">
+                      <input name="next1" class="checkbox" type="checkbox">
                       <span>watch television</span>
                     </label>
                   </li>
                   <li>
                     <label>
-                      <input name="check2" class="checkbox" type="checkbox">
+                      <input name="next2" class="checkbox" type="checkbox">
                       <span>sleep/nap</span>
                     </label>
                   </li>
                   <li>
                     <label>
-                      <input name="check3" class="checkbox" type="checkbox">
+                      <input name="next3" class="checkbox" type="checkbox">
                       <span>listen to music</span>
                     </label>
                   </li>
                   <li>
                     <label>
-                      <input name="check4" class="checkbox" type="checkbox">
+                      <input name="next4" class="checkbox" type="checkbox">
                       <span>meditate/pray</span>
                     </label>
                   </li>
                   <li>
                     <h1>Thinking Differently</h1>
                     <label>
-                      <input name="check5" class="checkbox" type="checkbox">
+                      <input name="next5" class="checkbox" type="checkbox">
                       <span>write in journal about your day</span>
                     </label>
                   </li>
                   <li>
                     <label>
-                      <input name="check6" class="checkbox" type="checkbox">
+                      <input name="next6" class="checkbox" type="checkbox">
                       <span>talk to a friend</span>
                     </label>
                   </li>
                   <li>
                     <h1>Problem Solving</h1>
                     <label>
-                      <input name="check7" class="checkbox" type="checkbox">
+                      <input name="next7" class="checkbox" type="checkbox">
                       <span>talk to someone that can help (therapist/case worker)</span>
                     </label>
                   </li>
                   <li>
                     <label>
-                      <input name="check8" class="checkbox" type="checkbox">
+                      <input name="next8" class="checkbox" type="checkbox">
                       <span>make a plan</span>
                     </label>
                   </li>	
                   <li>
                     <label>
-                      <input name="check9" class="checkbox" type="checkbox">
+                      <input name="next9" class="checkbox" type="checkbox">
                       <span>create a 'to do' list</span>
                     </label>
                   </li>	
                   <li>
                     <label>
-                      <input name="check10" class="checkbox" type="checkbox">
+                      <input name="next10" class="checkbox" type="checkbox">
                       <span>learn more about the problem</span>
                     </label>
                   </li>	
@@ -453,8 +455,9 @@
                     <label>
                       <a href="#">or click here to add something you did</a>
                       <div class="add">
-                        <textarea name="add-text"></textarea>
-                        <button class="add-item">Add To List</button>
+                        <textarea name="add-next-text"></textarea>
+                        <button class="cancel-add-next">Cancel</button>
+                        <button class="add-next-item">Add To List</button>
                       </div>                  
                     </label>
                   </li>	

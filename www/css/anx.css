@@ -342,9 +342,10 @@ body .download-app {
   width: 300px;
   border: 1px solid #fff;
   padding: 30px 15px;
+  padding-bottom: 42px;
   border-radius: 0;
   background: #3f5b80;
-  margin: 60px auto 20px;
+  margin: 60px auto 60px;
   box-shadow: 0 2px 20px rgba(102,102,102,0.8);
   text-align: center;
 /* offset horizontal: half of text area width */
@@ -388,7 +389,8 @@ body .download-app {
   padding-left: 8px;
   width: 100%;
 }
-#container .app .ideas-list h1 {
+#container .app .ideas-list h1,
+#container .app .next-ideas-list h1 {
   font-size: 14px;
   text-decoration: underline;
   margin-top: 6px;
@@ -456,6 +458,9 @@ body .download-app {
 #container[data-slide="4"] .app[data-num="4"] {
   display: block;
 }
+#container[data-slide="4"] .app[data-num="4"] .intro-buttons {
+  margin-top: 32px;
+}
 #container[data-slide="4"] .app[data-num="4"] .changer {
   font-size: 12px;
 }
@@ -471,6 +476,10 @@ body .download-app {
 }
 #container[data-slide="5"] .app[data-num="5"] {
   display: block;
+}
+#container[data-slide="5"] .last-slide .intro-buttons,
+#container[data-slide="5"] .next-time .intro-buttons {
+  margin-top: 32px;
 }
 #container[data-slide="6"] .app[data-num="6"] {
   display: block;
@@ -513,7 +522,7 @@ ul li {
 ul li.add-idea,
 ul li.add-feeling {
   padding-left: 33px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 ul li.add-idea > label,
 ul li.add-feeling > label {
@@ -542,10 +551,23 @@ ul li.add-feeling .add {
 }
 ul li.add-idea button,
 ul li.add-feeling button {
-  width: 100%;
+  width: 50%;
   height: 28px;
   font-size: 14px;
   border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  border: none;
+}
+ul li.add-idea button.cancel-add-feeling,
+ul li.add-feeling button.cancel-add-feeling,
+ul li.add-idea button.cancel-add-item,
+ul li.add-feeling button.cancel-add-item,
+ul li.add-idea button.cancel-add-next,
+ul li.add-feeling button.cancel-add-next {
+  color: #aaa;
+  font-weight: normal;
+  width: 42%;
 }
 ul label {
   display: -webkit-box;

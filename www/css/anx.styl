@@ -365,9 +365,10 @@ body {
       width: 300px;
       border: 1px solid #FFF;
       padding: 30px 15px;
+      padding-bottom: 42px;
       border-radius: 0;
       background: #3f5b80;
-      margin: 60px auto 20px;   
+      margin: 60px auto 60px;   
       box-shadow: 0 2px 20px rgba(#666,.8);
       text-align:center;
       
@@ -421,7 +422,7 @@ body {
       padding-left: 8px;
       width: 100%;
     }
-    .ideas-list {
+    .ideas-list, .next-ideas-list {
       h1 {
         font-size: 14px;
         text-decoration: underline;
@@ -514,6 +515,9 @@ body {
     .app {
       &[data-num="4"] {
         display: block;
+        .intro-buttons {
+          margin-top: 32px;
+        }
         .changer {
           font-size: 12px;
           > span {
@@ -537,6 +541,11 @@ body {
       &[data-num="5"] {
         display: block;
       }
+    }
+    .last-slide, .next-time {
+      .intro-buttons {
+        margin-top: 32px;
+      }      
     }
   }
   &[data-slide="6"] {
@@ -588,7 +597,7 @@ ul {
     width: 100%;
     &.add-idea, &.add-feeling {
       padding-left: 33px;
-      margin-top: 10px;
+      margin-top: 15px;
       > label {
         display: block;
       }
@@ -611,10 +620,18 @@ ul {
         display: none;
       }
       button {                
-        width: 100%;
+        width: 50%;
         height: 28px;
         font-size: 14px;
         border-radius: 4px;        
+        background: transparent;
+        color: white;
+        border: none;
+        &.cancel-add-feeling, &.cancel-add-item, &.cancel-add-next {
+          color: #aaa;
+          font-weight: normal;
+          width: 42%;
+        }
       }
     }
   }

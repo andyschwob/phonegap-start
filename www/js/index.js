@@ -96,7 +96,8 @@ var app = {
                 id: '',
                 sessions: [],
                 tempSession: {},
-                thingsToDo: []
+                feelingsList: [],
+                copingList: []
               }
             localStorage.anxiety = JSON.stringify(anxiety);
           } else {
@@ -113,24 +114,79 @@ var app = {
           initApp();
                     
         } catch(e) {}
+
+        $(document).on('click', '.cancel-add-item', function(e) {
+          var self = $(this);
+          $('.ideas-list .add-idea').find('a').show();
+          $('.ideas-list .add-idea').find('.add').hide();
+          $('textarea[name="add-text"]').val('');          
+        });
         
         $(document).on('click', '.add-item', function(e) {
            e.preventDefault();
            var val = $('[name="add-text"]').val();
            if (val) {             
-             $('.add-idea').find('a').show();
-             $('.add-idea').find('.add').hide();
+             $('.ideas-list .add-idea').find('a').show();
+             $('.ideas-list .add-idea').find('.add').hide();
              var count = $('.ideas-list > li').length;
              var title = '';
              if (!$('.ideas-list h1.other').length) {
                title = '<h1 class="other">Other</h1>';
              }
-             var newCheckbox = $('<li>'+title+'<label><input name="check'+count+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
+             $('textarea[name="add-text"]').val('');
+             var newCheckbox = $('<li class="user-added">'+title+'<label><input name="check'+count+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
+
              
-             $('li.add-idea').before(newCheckbox);
+             $('.ideas-list li.add-idea').before(newCheckbox);
+
+             var obj = JSON.parse(localStorage.anxiety);
+             if (!obj.copingList) {
+               obj.copingList = [];
+             }
+             obj.copingList.push(val);             
+             localStorage.anxiety = JSON.stringify(obj);  
            }
         });
 
+        $(document).on('click', '.cancel-add-next', function(e) {
+          var self = $(this);
+          $('.next-ideas-list .add-idea').find('a').show();
+          $('.next-ideas-list .add-idea').find('.add').hide();
+          $('textarea[name="add-next-text"]').val('');          
+        });
+
+        $(document).on('click', '.add-next-item', function(e) {
+           e.preventDefault();
+           var val = $('[name="add-next-text"]').val();
+           if (val) {             
+             $('.next-ideas-list .add-idea').find('a').show();
+             $('.next-ideas-list .add-idea').find('.add').hide();
+             var count = $('.next-ideas-list > li').length;
+             var title = '';
+             if (!$('.next-ideas-list h1.other').length) {
+               title = '<h1 class="other">Other</h1>';
+             }
+             $('textarea[name="add-next-text"]').val('');
+             var newCheckbox = $('<li class="user-added">'+title+'<label><input name="check'+count+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
+             
+             $('.next-ideas-list li.add-idea').before(newCheckbox);
+
+             var obj = JSON.parse(localStorage.anxiety);
+             if (!obj.copingList) {
+               obj.copingList = [];
+             }
+             obj.copingList.push(val);             
+             localStorage.anxiety = JSON.stringify(obj);  
+           }
+        });
+
+        $(document).on('click', '.cancel-add-feeling', function(e) {
+          var self = $(this);
+          $('.add-feeling').find('a').show();
+          $('.add-feeling').find('.add').hide();
+          $('textarea[name="add-feeling-text"]').val('');          
+        });
+        
         $(document).on('click', '.add-feeling-item', function(e) {
            e.preventDefault();
            var val = $('[name="add-feeling-text"]').val();
@@ -138,10 +194,19 @@ var app = {
              $('.add-feeling').find('a').show();
              $('.add-feeling').find('.add').hide();
              var count = $('.feelings-list > li').length;
+             $('textarea[name="add-feeling-text"]').val('');
              
-             var newCheckbox = $('<li><label><input name="feelings'+count+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
+             var newCheckbox = $('<li class="user-added"><label><input name="feelings'+count+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
              
              $('li.add-feeling').before(newCheckbox);
+
+             var obj = JSON.parse(localStorage.anxiety);
+             if (!obj.feelingsList) {
+               obj.feelingsList = [];
+             }
+             obj.feelingsList.push(val);             
+             localStorage.anxiety = JSON.stringify(obj);            
+             
            }
         });
         
@@ -152,14 +217,31 @@ var app = {
           $('#my-slider').html('<div class="red-bar handle"><span>3</span></div>');
           $('#my-slider2').html('<div class="red-bar handle"><span>3</span></div>');
           $container.show().attr('data-slide','1');
+
+           $('textarea').each(function() {
+             $(this).val('');
+           });
+           $('input[type="checkbox"]').prop('checked', false);
+           $('.final-check').hide();
+           $('.last-slide').show();
+  
+           $('.add-idea, .add-feeling').find('a').show();
+           $('.add-idea, .add-feeling').find('.add').hide();
+
           initApp();
         });
 
         $(document).on('click', '.add-idea a', function(e) {
            e.preventDefault();
+           var self = $(this);
            $(this).hide();
-           $('.add-idea').find('.add').show();
-           //var newCheckbox = $('<li><label><input name="check8" class="checkbox" type="checkbox"><span>focus on breathing</span></label></li>');
+
+           if (self.closest('ul').hasClass('ideas-list')) {
+             $('.ideas-list .add-idea').find('.add').show();
+           } else {
+             $('.next-ideas-list .add-idea').find('.add').show();
+           }
+
         });
         $(document).on('click', '.add-feeling a', function(e) {
            e.preventDefault();
@@ -177,7 +259,7 @@ var app = {
         
         $('#history').on('click', '.cancel', function(e) {
            e.preventDefault();
-           console.log('cancel');
+
            var self = $(this);
            $('.admin-pw, .confirm-upload').hide();
            $('.history-content, .nav-bar .upload').show();
@@ -266,7 +348,7 @@ var app = {
              type: 'GET',
              data: sendData
            }).done(function(response) {
-             console.log(response);
+
              if (response === 'error') {
                 // show error   
                 console.log('error');                
@@ -284,7 +366,6 @@ var app = {
         });
         $(document).on('submit', '.anx-form', function(e) {
           e.preventDefault();
-          console.log('23423432343234234243');
           $(this).find('.sbmt').click();
         });
 
@@ -296,6 +377,8 @@ var app = {
 
         $(document).on('click', '.dismiss', function(e) {
            $container.attr('data-slide',3);
+           var text = 'Describe what is making you feel anxious.';
+           $('.app[data-num="3"]').find('.changer').text(text);
         });
 
         $(document).on('click', '.back', function(e) {
@@ -365,9 +448,13 @@ var app = {
                  });                 
                  var next_time_list = '<div><b>To do next time:</b> <ul class="things">'+next_time+'</ul></div>';
                }
+               var lvlafter = '';
+               if (this.howWellWork) {
+                lvlafter = '<div><b>My anxiety level afterwards:</b> '+parseInt(this.howWellWork,10)+'</div>';                 
+               }
                
                var historyItem = $('<li class="level"><span>'+date+'</span><div><div data-time="'+this.timestamp+'" class="color-bar ' + typeClass + '" style="width:'+perc+'%;">'+this.anxietyLevel+'</div></div></li>');             
-               var historyDetail = $('<li class="detail" data-time="'+this.timestamp+'"><div><b>Date:</b> '+this.formatted_date+'</div><div><b>My anxiety level:</b> '+this.anxietyLevel+'</div><div><b>Why I was feeling '+anxTxt+':</b> '+this.feel+'</div><div><b>Thoughts I was having:</b> '+this.what_thoughts+'</div><div><b>Feelings I was having:</b> '+this.what_feelings+'</div><div><b>Things I did:</b> <ul class="things">'+things+'</ul></div><div><b>My anxiety level afterwards:</b> '+lvlafter+'</div>' + next_time_list + '</li>'); 
+               var historyDetail = $('<li class="detail" data-time="'+this.timestamp+'"><div><b>Date:</b> '+this.formatted_date+'</div><div><b>My anxiety level:</b> '+this.anxietyLevel+'</div><div><b>Why I was feeling '+anxTxt+':</b> '+this.feel+'</div><div><b>Thoughts I was having:</b> '+this.what_thoughts+'</div><div><b>Feelings I was having:</b> '+this.what_feelings+'</div><div><b>Things I did:</b> <ul class="things">'+things+'</ul></div>' + lvlafter + next_time_list + '</li>'); 
                $('#history').find('.history-list').append(historyItem,historyDetail);               
              });
           }
@@ -422,7 +509,7 @@ var app = {
         $(document).on('click', '.enter-pin1', function(e) {
           var obj = JSON.parse(localStorage.anxiety);
           var pin = $('input[name="setpin"]').val();
-          console.log(pin);
+
 /*
           var idnumber = obj.idnumber;
           var id = obj.id;
@@ -460,7 +547,7 @@ var app = {
              var d = new Date();             
              var type = $container.attr('data-type');
              setLocalStorageValue('timestamp',new Date().getTime());
-             console.log(d.yyyymmdd())
+
              setLocalStorageValue('formatted_date',d.yyyymmdd());
              
              var obj = JSON.parse(localStorage.anxiety);
@@ -505,14 +592,17 @@ var app = {
                $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show(); 
              } else {    
               $('.app[data-num="5"]').find('.last-slide').hide();           
-                
-               $('.app[data-num="5"]').find('.final-slider').show();
-               initDragdealer2(); 
+
+              if ($container.attr('data-type') === 'free') {
+                $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show();               
+              } else {
+                 $('.app[data-num="5"]').find('.final-slider').show();
+                 initDragdealer2();                 
+              }
                
              }             
             
            } else if ($(this).hasClass('how-well')) {
-
               if (howWellWork <= 2) {
                 $('.app[data-num="5"]').find('.final-slider').hide();
                 $('.app[data-num="5"]').addClass('final-slide').find('.final-check').show(); 
@@ -520,6 +610,27 @@ var app = {
                 $('.app[data-num="5"]').find('.final-slider').hide();
                 $('.app[data-num="5"]').find('.next-time').show(); 
               }
+              // 
+
+                 var obj = JSON.parse(localStorage.anxiety);
+
+                 $('.next-ideas-list > li.user-added').remove();
+
+                 if (obj.copingList) {
+                   var count = $('.next-ideas-list > li:not(.user-added)').length;
+                   $.each(obj.copingList, function(i,val) {
+
+                     var title = '';
+                     if (!$('.next-ideas-list h1.other').length) {
+                       title = '<h1 class="other">Other</h1>';
+                     }
+
+                     var num = i + count;
+                     var newCheckbox = $('<li class="user-added">'+title+'<label><input name="check'+num+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
+                     $('.next-ideas-list li.add-idea').before(newCheckbox);
+                   });
+                 }
+
            } else if ($(this).hasClass('submit-next')) {
   
                var checkCount = 0;
@@ -575,7 +686,22 @@ var app = {
                    $('.app[data-num="3"]').find('.error').show();
                    return false;
                  }
-                 setLocalStorageValue('feel',q2);
+                 setLocalStorageValue('feel',q2);     
+          
+                 
+                 var obj = JSON.parse(localStorage.anxiety);
+
+                 $('.feelings-list > li.user-added').remove();
+                 if (obj.feelingsList) {
+                   var count = $('.feelings-list > li:not(.user-added)').length;
+                   $.each(obj.feelingsList, function(i,val) {
+                     var num = i + count;
+                     var newCheckbox = $('<li class="user-added"><label><input name="feelings'+num+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
+                     $('li.add-feeling').before(newCheckbox);
+                   });
+                 }
+
+
                }
                
                if (currentSlide == 4) {
@@ -611,6 +737,27 @@ var app = {
                  }   
                  
                  $('.app[data-num="5"]').find('.changer').text(text);
+                 
+
+                 var obj = JSON.parse(localStorage.anxiety);
+
+                 $('.ideas-list > li.user-added').remove();
+
+                 if (obj.copingList) {
+                   var count = $('.ideas-list > li:not(.user-added)').length;
+                   $.each(obj.copingList, function(i,val) {
+
+                     var title = '';
+                     if (!$('.ideas-list h1.other').length) {
+                       title = '<h1 class="other">Other</h1>';
+                     }
+
+                     var num = i + count;
+                     var newCheckbox = $('<li class="user-added">'+title+'<label><input name="check'+num+'" class="checkbox" type="checkbox"><span>'+val+'</span></label></li>');
+                     $('.ideas-list li.add-idea').before(newCheckbox);
+                   });
+                 }
+
                }
                
                $container.attr('data-slide',nextSlide);
@@ -623,7 +770,6 @@ var app = {
 
         
         function initDragdealer() {
-          console.log('initDragdealer')
         	new Dragdealer('my-slider',
         	{
         		steps: 8,
@@ -640,7 +786,7 @@ var app = {
         	});          
         }
         function initDragdealer2() {
-          console.log('initDragdealer2')
+
         	new Dragdealer('my-slider2',
         	{
         		steps: 8,
