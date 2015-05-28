@@ -377,7 +377,12 @@ var app = {
 
         $(document).on('click', '.dismiss', function(e) {
            $container.attr('data-slide',3);
-           var text = 'Describe what is making you feel anxious.';
+
+           if ($container.attr('data-type') === 'daily') {
+             var text = 'Describe what made you feel anxious.'; 
+           } else {
+             var text = 'Describe what is making you feel anxious.';   
+           } 
            $('.app[data-num="3"]').find('.changer').text(text);
         });
 
@@ -661,10 +666,13 @@ var app = {
                 
                 if (self.hasClass('daily')) {
                   $container.attr('data-type','daily');
+                  var text = "In the past 24 hours what was your anxiety level at the most severe moment?";
                 } else {
                   $container.attr('data-type','free');
+                  var text = "How anxious are you feeling right now?";
                 }
-                
+                $('.app[data-num="2"]').find('.changer').text(text);
+                                
               } 
                if(nextSlide == 3) {
                    if(anxiety >= 6) {
@@ -687,7 +695,16 @@ var app = {
                    return false;
                  }
                  setLocalStorageValue('feel',q2);     
-          
+
+                 if ($container.attr('data-type') === 'daily') {
+                   var text = 'What thoughts were you having at the time? <span>(thoughts are things we say to ourselves)</span>'; 
+                   var textfeelings = 'What feelings were you having at the time?'; 
+                 } else {
+                   var text = 'What thoughts are you having? <span>(thoughts are things we say to ourselves)</span>'; 
+                   var textfeelings = 'What feelings are you having?';   
+                 }   
+                 $('.app[data-num="4"]').find('.changer.thoughts').html(text);   
+                 $('.app[data-num="4"]').find('.changer.feelings').html(textfeelings);           
                  
                  var obj = JSON.parse(localStorage.anxiety);
 

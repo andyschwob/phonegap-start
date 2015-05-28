@@ -353,6 +353,9 @@ body .download-app {
 #container .app[data-num="1"] {
   padding-top: 15px;
 }
+#container .app[data-num="5"] {
+  margin-bottom: 100px;
+}
 #container .app .final-slide {
   background: #000;
 }
